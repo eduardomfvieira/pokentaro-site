@@ -1,0 +1,27 @@
+POKENTARO — SITE (HTML/CSS/JS estático, sem dependências)
+
+ESTRUTURA
+  index.html          Home (hero, manifesto, Monte seu poke, unidades)
+  unidades.html       Nossas Unidades
+  assets/css/styles.css
+  assets/js/main.js   comum (copiar endereço, rodapé, fallback da foto)
+  assets/js/monte.js  cardápio interativo — itens/limites/preços no objeto CARDAPIO
+  assets/img/         logos (verde, creme, piscina), favicon
+  robots.txt, sitemap.xml
+
+PENDENTE
+  - assets/img/poke-topo.webp  foto real vista de cima (quadrada, ~920px). Sem ela, aparece a ilustração.
+  - assets/img/og.jpg          imagem de compartilhamento (1200x630).
+  - Domínio: o código usa https://www.pokentaro.com.br — ajustar se for outro.
+
+INAUGURAR IPANEMA
+  unidades.html: data-status="breve" -> data-status="aberta" e preencher o horário.
+  Atualizar os textos "em breve" em index.html (cartão da home e rodapé).
+
+PUBLICAR (GitHub + Vercel)
+  1. GitHub: novo repositório "pokentaro-site" (privado ok) e suba o conteúdo desta pasta na raiz.
+  2. Vercel: Add New > Project > importar o repositório. Framework Preset: Other. Sem build command. Deploy.
+  3. Cada push na branch main publica automaticamente.
+  4. Domínio: Vercel > Project > Settings > Domains > adicionar pokentaro.com.br e www.pokentaro.com.br
+     e copiar para o Registro.br os registros DNS exatos que a Vercel mostrar.
+  vercel.json já ativa URLs limpas (/unidades) e cache dos arquivos de /assets.
