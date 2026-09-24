@@ -205,12 +205,12 @@ button{font-family:inherit;cursor:pointer}
 .alem-head{display:grid;gap:10px;max-width:640px}
 .alem-head h2{font-size:clamp(32px,4.4vw,56px);font-weight:800;color:var(--verde-escuro)}
 .alem-head p:last-child{color:var(--tinta-suave);font-size:17px}
-.alem-grid{display:grid;grid-template-columns:1fr 1fr;gap:24px;margin-top:40px}
+.alem-grid{display:grid;grid-template-columns:1fr 1fr;gap:24px;margin-top:28px}
 .alem-card{position:relative;border-radius:36px;padding:0 36px 36px;display:flex;flex-direction:column;isolation:isolate;overflow:visible}
 .alem-card::before{content:"";position:absolute;inset:0;border-radius:inherit;background-image:var(--pattern-dark);z-index:-1;opacity:.9}
-.alem-media{position:relative;height:340px;margin-top:-56px;display:flex;align-items:flex-end;justify-content:center}
-.alem-media::before{content:"";position:absolute;width:300px;height:300px;border-radius:50%;left:50%;bottom:10px;transform:translateX(-50%);background:rgba(255,242,195,.22);box-shadow:0 0 0 18px rgba(255,242,195,.10)}
-.alem-media img{position:relative;max-height:100%;width:auto;max-width:100%;object-fit:contain;filter:drop-shadow(0 22px 22px rgba(1,55,42,.35));transition:transform .35s ease}
+.alem-media{position:relative;height:221px;margin-top:-36px;display:flex;align-items:flex-end;justify-content:center}
+.alem-media::before{content:"";position:absolute;width:195px;height:195px;border-radius:50%;left:50%;bottom:10px;transform:translateX(-50%);background:rgba(255,242,195,.22);box-shadow:0 0 0 12px rgba(255,242,195,.10)}
+.alem-media img{position:relative;max-height:100%;width:auto;max-width:100%;object-fit:contain;filter:drop-shadow(0 14px 14px rgba(1,55,42,.35));transition:transform .35s ease}
 .alem-card:hover .alem-media img{transform:translateY(-6px) rotate(-1.5deg)}
 .alem-salada .alem-media img{max-height:88%;margin-bottom:6px}
 .alem-txt{display:grid;gap:10px;margin-top:20px}
@@ -223,5 +223,5 @@ button{font-family:inherit;cursor:pointer}
 .alem-smoothie{background-color:var(--azul-piscina);color:var(--verde-escuro)}
 .alem-smoothie::before{background-image:var(--pattern-light)}
 .alem-cta{display:flex;align-items:center;gap:16px;flex-wrap:wrap;font-weight:500}
-@media (max-width:900px){.alem-grid{grid-template-columns:1fr;gap:72px}}
-@media (max-width:520px){.alem .wrap{padding-block:56px}.alem-card{padding:0 22px 26px;border-radius:28px}.alem-media{height:270px;margin-top:-44px}.alem-media::before{width:230px;height:230px}}
+@media (max-width:900px){.alem-grid{grid-template-columns:1fr;gap:52px}}
+@media (max-width:520px){.alem .wrap{padding-block:56px}.alem-card{padding:0 22px 26px;border-radius:28px}.alem-media{height:176px;margin-top:-29px}.alem-media::before{width:150px;height:150px}}
