@@ -1,0 +1,178 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Seja um franqueado · Pokentaro</title>
+<meta name="description" content="Leve o Pokentaro pra sua cidade. Preencha a ficha de interesse e fale com o time de expansão da franquia.">
+<meta name="theme-color" content="#01372a">
+<link rel="canonical" href="https://www.pokentaro.com.br/franquia">
+<link rel="icon" href="favicon.svg" type="image/svg+xml">
+<meta property="og:type" content="website">
+<meta property="og:locale" content="pt_BR">
+<meta property="og:title" content="Seja um franqueado Pokentaro">
+<meta property="og:description" content="Leve o frescor carioca do Pokentaro pra sua cidade. Preencha a ficha de interesse.">
+<meta property="og:image" content="https://www.pokentaro.com.br/og.jpg">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap">
+<link rel="stylesheet" href="styles.css?v=11">
+</head>
+<body>
+<a class="skip" href="#conteudo">Pular para o conteúdo</a>
+
+<header class="nav">
+  <div class="wrap">
+    <a class="logo" href="/" aria-label="Pokentaro — início"><img src="logo-pokentaro-verde.svg" alt="Pokentaro" width="152" height="32"></a>
+    <ul>
+      <li><a href="/">Início</a></li>
+      <li><a href="/#monte">Monte seu poke</a></li>
+      <li><a href="/unidades">Unidades</a></li>
+      <li><a href="/franquia" aria-current="page">Seja um franqueado</a></li>
+    </ul>
+    <a class="btn btn-laranja btn-sm" href="#ficha">Quero ser franqueado</a>
+  </div>
+</header>
+
+<main id="conteudo">
+  <section class="fr-hero" aria-labelledby="fr-title">
+    <div class="wrap">
+      <div class="fr-hero-txt">
+        <p class="eyebrow">Seja um franqueado</p>
+        <h1 id="fr-title">Leve o Pokentaro <span>pra sua cidade.</span></h1>
+        <p class="sub">Uma marca com sotaque carioca, produto fresco e um cardápio que o cliente monta do jeito dele. A gente tá procurando parceiros pra levar essa onda mais longe.</p>
+        <div class="ctas">
+          <a class="btn btn-laranja" href="#ficha">Preencher ficha de interesse</a>
+          <a class="btn btn-ghost-claro" href="#como-funciona">Como funciona</a>
+        </div>
+      </div>
+      <figure class="fr-hero-fig">
+        <img src="poke-topo.webp?v=9" alt="Poke bowl Pokentaro visto de cima" width="1200" height="1200">
+      </figure>
+    </div>
+  </section>
+
+  <section class="fr-porque" aria-labelledby="porque-title">
+    <div class="wrap">
+      <h2 id="porque-title">Por que Pokentaro?</h2>
+      <div class="fr-cards">
+        <article><h3>Marca com cara de Rio</h3><p>Identidade solar, fresca e jovem — nasceu entre a praia e o shopping e conversa com quem vive bem.</p></article>
+        <article><h3>Modelo simples de replicar</h3><p>O cliente monta o próprio poke em etapas. Processo claro, cardápio organizado, operação fácil de padronizar.</p></article>
+        <article><h3>Comida que o público já procura</h3><p>Leve, saudável e saborosa. Poke, saladas e smoothies pro almoço, pro pós-treino e pro fim de tarde.</p></article>
+        <article><h3>Quem opera, ensina</h3><p>A gente toca as nossas próprias lojas todo dia. É essa prática que vai junto com o franqueado.</p></article>
+      </div>
+    </div>
+  </section>
+
+  <section class="fr-passos" id="como-funciona" aria-labelledby="passos-title">
+    <div class="wrap">
+      <h2 id="passos-title">Como funciona</h2>
+      <ol>
+        <li><b>Você preenche a ficha</b><span>Leva uns 2 minutos. Conta pra gente onde quer abrir e o seu momento.</span></li>
+        <li><b>A gente conversa</b><span>Nosso time de expansão entra em contato pra se conhecer melhor.</span></li>
+        <li><b>Apresentação oficial</b><span>Você recebe a Circular de Oferta de Franquia (COF) com todos os detalhes do negócio e conhece nossas lojas.</span></li>
+        <li><b>Mão na massa</b><span>Com tudo alinhado, começa a implantação da sua unidade.</span></li>
+      </ol>
+    </div>
+  </section>
+
+  <section class="fr-form-sec" id="ficha" aria-labelledby="ficha-title">
+    <div class="wrap">
+      <div class="fr-form-head">
+        <p class="eyebrow">Ficha de interesse</p>
+        <h2 id="ficha-title">Bora conversar?</h2>
+        <p>Preencha os dados abaixo. Campos com * são obrigatórios.</p>
+      </div>
+
+      <form id="form-franquia" class="fr-form" novalidate>
+        <div class="campo"><label for="f-nome">Nome completo *</label><input id="f-nome" name="nome" type="text" autocomplete="name" required></div>
+        <div class="campo"><label for="f-email">E-mail *</label><input id="f-email" name="email" type="email" autocomplete="email" required></div>
+        <div class="campo"><label for="f-whats">WhatsApp *</label><input id="f-whats" name="whatsapp" type="tel" autocomplete="tel" inputmode="tel" placeholder="(21) 99999-9999" required></div>
+        <div class="campo campo-duplo">
+          <div><label for="f-cidade">Cidade de interesse *</label><input id="f-cidade" name="cidade" type="text" required></div>
+          <div><label for="f-uf">Estado *</label>
+            <select id="f-uf" name="estado" required>
+              <option value="">UF</option>
+              <option>AC</option><option>AL</option><option>AP</option><option>AM</option><option>BA</option><option>CE</option><option>DF</option><option>ES</option><option>GO</option><option>MA</option><option>MT</option><option>MS</option><option>MG</option><option>PA</option><option>PB</option><option>PR</option><option>PE</option><option>PI</option><option selected>RJ</option><option>RN</option><option>RS</option><option>RO</option><option>RR</option><option>SC</option><option>SP</option><option>SE</option><option>TO</option>
+            </select>
+          </div>
+        </div>
+        <fieldset class="campo">
+          <legend>Capital disponível para investir *</legend>
+          <div class="opcoes">
+            <label><input type="radio" name="capital" value="R$ 150 a 300 mil" required> R$ 150 a 300 mil</label>
+            <label><input type="radio" name="capital" value="R$ 300 a 500 mil"> R$ 300 a 500 mil</label>
+            <label><input type="radio" name="capital" value="Acima de R$ 500 mil"> Acima de R$ 500 mil</label>
+          </div>
+        </fieldset>
+        <fieldset class="campo">
+          <legend>Já teve negócio em alimentação ou franquia? *</legend>
+          <div class="opcoes">
+            <label><input type="radio" name="experiencia" value="Sim, em alimentação" required> Sim, em alimentação</label>
+            <label><input type="radio" name="experiencia" value="Sim, em franquia de outro setor"> Sim, franquia de outro setor</label>
+            <label><input type="radio" name="experiencia" value="Não, seria o primeiro"> Não, seria o primeiro</label>
+          </div>
+        </fieldset>
+        <div class="campo campo-duplo">
+          <div><label for="f-prazo">Quando pretende começar? *</label>
+            <select id="f-prazo" name="prazo" required>
+              <option value="">Selecione</option><option>Em até 3 meses</option><option>De 3 a 6 meses</option><option>De 6 a 12 meses</option><option>Ainda estou pesquisando</option>
+            </select></div>
+          <div><label for="f-origem">Como conheceu o Pokentaro?</label>
+            <select id="f-origem" name="origem">
+              <option value="">Selecione</option><option>Sou cliente</option><option>Instagram</option><option>Indicação</option><option>Google</option><option>Outro</option>
+            </select></div>
+        </div>
+        <div class="campo"><label for="f-msg">Quer contar mais alguma coisa?</label><textarea id="f-msg" name="mensagem" rows="4" placeholder="Ex.: já tenho um ponto em vista, quero abrir com um sócio..."></textarea></div>
+        <div class="hp" aria-hidden="true"><label for="f-site">Não preencha</label><input id="f-site" name="site" type="text" tabindex="-1" autocomplete="off"></div>
+        <label class="consent"><input type="checkbox" id="f-lgpd" name="consentimento" value="sim" required> <span>Autorizo o Pokentaro a usar esses dados para entrar em contato sobre a franquia, conforme a LGPD. *</span></label>
+        <p class="erro" id="form-erro" role="alert" hidden></p>
+        <button class="btn btn-laranja" type="submit" id="f-enviar">Enviar minha ficha</button>
+      </form>
+
+      <div class="fr-sucesso" id="fr-sucesso" hidden tabindex="-1">
+        <div class="sol-mini" aria-hidden="true"></div>
+        <p class="eyebrow">Ficha recebida</p>
+        <h2>Aí sim, <span id="suc-nome">parceiro</span>! Sua onda chegou aqui.</h2>
+        <p>Tua ficha já tá com o nosso time de expansão. Em breve a gente te chama no WhatsApp ou no e-mail pra trocar uma ideia sobre levar o Pokentaro pra <b id="suc-cidade">sua cidade</b>.</p>
+        <p>Enquanto isso, dá um mergulho no nosso Instagram e vai pegando o clima.</p>
+        <div class="ctas">
+          <a class="btn btn-laranja" href="https://www.instagram.com/pokentaro.rj/" target="_blank" rel="noopener">Seguir @pokentaro.rj</a>
+          <a class="btn btn-ghost-claro" href="/">Voltar pro site</a>
+        </div>
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer class="foot">
+  <div class="wrap">
+    <div>
+      <a class="logo" href="/"><img src="logo-pokentaro-creme.svg" alt="Pokentaro" width="170" height="36" style="height:36px"></a>
+      <p style="margin-top:10px;max-width:28ch;opacity:.9">Monte seu poke, do seu jeito. Frescor de Rio, todo dia.</p>
+    </div>
+    <div>
+      <h4>BarraShopping</h4>
+      <p>Av. das Américas, 4666 · Loja 234G</p>
+      <p>Seg a sáb · 11h–23h</p>
+      <p>Dom e feriados · 12h–22h</p>
+    </div>
+    <div>
+      <h4>Ipanema · em breve</h4>
+      <p>Rua Farme de Amoedo, 87</p>
+      <p>CEP 22420-020</p>
+    </div>
+    <div>
+      <h4>Siga</h4>
+      <p><a href="https://www.instagram.com/pokentaro.rj/" target="_blank" rel="noopener">Instagram @pokentaro.rj</a></p>
+      <h4 style="margin-top:14px">Franquia</h4>
+      <p><a href="/franquia">Seja um franqueado</a></p>
+    </div>
+    <p class="fine">© <span data-ano>2026</span> Pokentaro · Rio de Janeiro</p>
+  </div>
+</footer>
+
+<script src="main.js?v=11" defer></script>
+<script src="franquia.js?v=11" defer></script>
+</body>
+</html>
