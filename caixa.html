@@ -1,0 +1,300 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="robots" content="noindex,nofollow">
+<title>Caixa | Pokentaro Ipanema</title>
+<link rel="icon" href="/favicon.svg" type="image/svg+xml">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&display=swap">
+<style>
+/* Painel do caixa: barra fixa no topo, fila de pedidos em colunas (mais antigo à esquerda), concluídos numa gaveta abaixo. */
+:root{
+  --ve:#01372a; --v:#007d51; --cr:#fff2c3; --la:#ff7701; --ci:#00c4d8; --az:#004366;
+  --bg:#f3f1e7; --card:#ffffff; --ink:#10261f; --muted:#5f6f68; --line:#e2e4da;
+  --font:"Poppins",system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;
+  color-scheme:light;
+}
+*{box-sizing:border-box}
+[hidden]{display:none!important}
+html,body{margin:0;background:var(--bg);color:var(--ink);font-family:var(--font)}
+button{font:inherit;cursor:pointer}
+button:focus-visible{outline:3px solid var(--la);outline-offset:2px}
+header{position:sticky;top:0;z-index:10;display:flex;align-items:center;gap:20px;padding:14px 24px;background:var(--ve);color:var(--cr)}
+header .logo{height:30px;width:auto;display:block}
+header h1{margin:0;font-size:1.05rem;font-weight:600;color:var(--cr);opacity:.9}
+header .sp{flex:1}
+.stat{display:flex;align-items:baseline;gap:6px;font-size:.85rem;color:#b9d2c8}
+.stat b{font-size:1.4rem;color:var(--la);font-variant-numeric:tabular-nums}
+.clock{font-size:1.4rem;font-weight:700;font-variant-numeric:tabular-nums;min-width:4.2ch;text-align:right}
+.conn{display:flex;align-items:center;gap:6px;font-size:.78rem;color:#b9d2c8}
+.conn i{width:10px;height:10px;border-radius:50%;background:#7aa597}
+.conn.ok i{background:#34d399;box-shadow:0 0 0 3px rgba(52,211,153,.25)}
+.conn.bad i{background:#f87171}
+.sound{border:1px solid rgba(255,242,195,.35);background:transparent;color:var(--cr);border-radius:999px;padding:7px 14px;font-size:.82rem;font-weight:600}
+.sound.on{background:var(--cr);color:var(--ve);border-color:var(--cr)}
+.banner{margin:16px 24px 0;padding:12px 16px;border-radius:12px;background:#fff3e6;color:#7a3a00;font-size:.9rem;display:flex;justify-content:space-between;align-items:center;gap:12px}
+.banner button{border:0;border-radius:8px;background:var(--la);color:#fff;font-weight:600;padding:8px 14px}
+.banner.err{background:#ffe4e4;color:#8a1c1c}
+main{padding:20px 24px 40px}
+.queue{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:16px;align-items:start}
+.empty{grid-column:1/-1;padding:70px 20px;text-align:center;color:var(--muted)}
+.empty b{display:block;font-size:1.2rem;color:var(--ink);margin-bottom:4px}
+.order{background:var(--card);border-radius:16px;box-shadow:0 1px 0 var(--line),0 6px 18px rgba(1,55,42,.06);display:flex;flex-direction:column;overflow:hidden;border-top:6px solid var(--v)}
+.order.fresh{animation:fresh 1s ease-in-out 4;border-top-color:var(--la)}
+@keyframes fresh{50%{box-shadow:0 0 0 6px rgba(255,119,1,.35)}}
+@media (prefers-reduced-motion:reduce){.order.fresh{animation:none}}
+.order.late{border-top-color:#e35d3a}
+.oh{display:flex;align-items:flex-end;justify-content:space-between;gap:12px;padding:14px 16px 10px}
+.num{font-size:2.6rem;font-weight:800;line-height:1;color:var(--ve);font-variant-numeric:tabular-nums}
+.num small{display:block;font-size:.68rem;font-weight:600;letter-spacing:.14em;text-transform:uppercase;color:var(--muted);margin-bottom:4px}
+.when{text-align:right;font-size:.8rem;color:var(--muted);font-variant-numeric:tabular-nums}
+.when b{display:block;font-size:.95rem;color:var(--ink)}
+.order.late .when b{color:#c2410c}
+.items{list-style:none;margin:0;padding:4px 16px 8px;border-top:1px dashed var(--line)}
+.items li{display:grid;grid-template-columns:auto 1fr auto;gap:4px 10px;padding:9px 0;border-bottom:1px solid #f0f1ea}
+.items li:last-child{border-bottom:0}
+.q{font-weight:800;color:var(--la);font-variant-numeric:tabular-nums}
+.n{font-weight:600;font-size:.95rem;min-width:0}
+.d{grid-column:2/4;font-size:.8rem;color:var(--muted);line-height:1.35}
+.p{font-weight:600;font-size:.88rem;font-variant-numeric:tabular-nums;white-space:nowrap}
+.tot{display:flex;justify-content:space-between;padding:12px 16px;background:#f7f6ef;font-weight:700;font-variant-numeric:tabular-nums}
+.tot span:last-child{font-size:1.15rem}
+.acts{display:flex;gap:8px;padding:12px 16px 16px}
+.done{flex:1;border:0;border-radius:12px;background:var(--v);color:#fff;font-weight:700;padding:13px}
+.cancel{border:1px solid var(--line);background:#fff;border-radius:12px;color:var(--muted);font-weight:600;padding:13px 14px}
+details.hist{margin-top:28px;background:var(--card);border-radius:16px;box-shadow:0 1px 0 var(--line)}
+details.hist summary{cursor:pointer;padding:16px 20px;font-weight:600;list-style:none;display:flex;justify-content:space-between}
+details.hist summary::-webkit-details-marker{display:none}
+details.hist summary span{color:var(--muted);font-weight:500}
+.hrow{display:grid;grid-template-columns:70px 70px 1fr 110px 120px;gap:12px;align-items:center;padding:10px 20px;border-top:1px solid #f0f1ea;font-size:.88rem}
+.hrow .hn{font-weight:800;color:var(--ve);font-variant-numeric:tabular-nums}
+.hrow .ht{color:var(--muted);font-variant-numeric:tabular-nums}
+.hrow .hi{min-width:0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;color:var(--muted)}
+.hrow .hv{text-align:right;font-weight:600;font-variant-numeric:tabular-nums}
+.hrow .hs{justify-self:end;font-size:.75rem;font-weight:600;border-radius:999px;padding:3px 10px;background:#e3f3ec;color:var(--v)}
+.hrow .hs.c{background:#f1f1ee;color:#8a8f8c;text-decoration:line-through}
+.hrow button{border:0;background:transparent;color:var(--az);font-weight:600;font-size:.8rem;text-decoration:underline;padding:0;margin-left:8px}
+@media (max-width:700px){header{flex-wrap:wrap;gap:10px 14px}.hrow{grid-template-columns:50px 1fr 90px}.hrow .ht,.hrow .hi{display:none}}
+</style>
+</head>
+<body>
+<header>
+  <svg class="logo" xmlns="http://www.w3.org/2000/svg" viewBox="46 30 3414 719" role="img" aria-label="Pokentaro"><title>Pokentaro</title><g transform="translate(0.000000,745.000000) scale(0.100000,-0.100000)"
+fill="#fff2c3" stroke="none">
+<path d="M1605 7100 c-88 -16 -271 -80 -335 -118 -188 -111 -308 -335 -310
+-580 0 -94 -220 -1970 -241 -2057 -12 -51 -23 -151 -29 -257 -5 -95 -25 -299
+-44 -453 -118 -947 -131 -1107 -131 -1630 0 -434 6 -571 41 -985 23 -276 58
+-414 152 -592 59 -113 113 -173 270 -299 70 -56 134 -108 143 -116 23 -20 82
+32 103 90 30 79 84 642 215 2239 66 803 61 771 146 830 58 40 2920 608 3067
+608 291 1 436 119 469 380 16 128 16 419 0 495 -42 199 -313 1148 -421 1475
+-67 201 -257 725 -280 770 -25 48 -70 88 -111 100 -114 33 -508 -8 -1448 -151
+l-524 -79 -96 93 c-195 189 -425 275 -636 237z m2125 -773 c65 -22 88 -80 189
+-458 27 -102 75 -295 106 -430 32 -134 82 -347 112 -474 61 -256 64 -306 22
+-351 -49 -53 39 -35 -1599 -315 -223 -38 -429 -69 -458 -69 -96 0 -168 57
+-192 150 -10 38 -3 122 44 565 30 286 67 651 81 810 40 457 2 425 575 489 217
+24 451 49 520 56 464 42 544 46 600 27z M9620 6388 c-129 -36 -179 -188 -137
+-418 22 -115 25 -212 43 -1205 19 -1116 27 -1316 55 -1475 57 -328 17 -440
+-201 -564 -41 -23 -101 -53 -133 -66 -66 -26 -117 -79 -136 -139 -11 -37 -8
+-49 55 -218 105 -282 135 -331 254 -424 187 -144 218 -266 151 -594 -19 -88
+-39 -170 -47 -181 -12 -19 -9 -28 22 -80 56 -94 -15 -81 666 -125 341 -22 340
+-26 215 656 -89 491 -106 589 -102 593 11 12 509 -256 640 -343 140 -94 236
+-163 895 -642 570 -413 745 -506 997 -528 145 -13 268 19 341 88 64 61 27 127
+-165 298 -209 186 -414 396 -683 699 -294 332 -555 594 -750 756 -80 66 -198
+164 -263 217 -65 54 -115 102 -112 107 4 6 273 210 600 455 601 452 674 513
+735 618 69 119 93 277 66 426 -8 45 -16 85 -18 87 -2 2 -496 -248 -1098 -556
+-602 -307 -1095 -558 -1096 -557 -3 4 46 962 56 1097 6 79 24 235 40 345 73
+506 160 1199 160 1286 0 65 -28 146 -64 184 -27 28 -52 37 -206 78 -402 107
+-684 152 -780 125z M21723 5885 c-71 -20 -127 -58 -163 -113 -59 -90 -63 -117
+-68 -459 l-4 -313 -21 0 c-12 0 -121 11 -242 25 -163 19 -316 28 -590 35 -502
+14 -1060 30 -1291 37 -303 9 -363 -25 -469 -266 -50 -114 -60 -156 -75 -306
+-20 -202 15 -301 126 -352 92 -42 157 -45 529 -28 1184 54 1845 75 1880 61 66
+-28 68 -38 76 -451 58 -2726 60 -2762 173 -3001 51 -108 98 -162 238 -275 107
+-87 111 -89 150 -56 27 22 28 25 58 301 16 153 66 714 110 1245 114 1369 129
+1519 201 1965 36 218 44 239 115 289 47 33 57 34 534 67 448 30 963 58 1505
+80 1287 53 1402 64 1950 197 285 69 340 96 361 179 9 35 0 152 -12 164 -7 7
+-732 22 -2119 45 -1160 19 -2109 36 -2111 37 -4 5 56 340 76 426 33 138 25
+228 -23 280 -39 42 -93 61 -267 97 -94 20 -225 49 -293 65 -151 37 -262 46
+-334 25z M5492 4564 c-124 -62 -193 -212 -227 -494 -33 -278 -89 -392 -228
+-465 l-54 -28 48 -63 c99 -131 106 -232 34 -479 -25 -87 -82 -303 -125 -480
+-85 -347 -155 -581 -364 -1230 -154 -477 -150 -445 -54 -493 l46 -23 1803 1
+c1630 0 1813 -1 1894 -16 246 -45 393 3 473 153 62 118 132 412 132 559 0 182
+-72 1051 -116 1404 -29 233 -100 695 -115 755 -14 50 -73 109 -124 124 -159
+45 -867 95 -1817 128 l-186 6 -22 115 c-12 64 -28 131 -35 149 -18 43 -118
+108 -335 216 -367 184 -509 221 -628 161z m1454 -1179 c756 -65 943 -92 989
+-141 45 -49 65 -279 91 -1050 22 -632 41 -590 -271 -587 -233 1 -1404 30
+-1570 38 -100 5 -306 43 -323 60 -2 1 61 207 138 456 184 591 197 636 270 884
+78 271 84 285 124 324 62 60 48 60 552 16z M31228 4416 c-95 -26 -151 -82
+-206 -206 -38 -86 -49 -133 -73 -319 -34 -271 -86 -374 -226 -453 l-52 -30 39
+-52 c105 -139 113 -245 38 -501 -26 -88 -81 -297 -122 -465 -82 -334 -122
+-475 -287 -990 -61 -190 -136 -424 -167 -520 -30 -96 -56 -176 -58 -178 -1 -2
+-1516 895 -1556 923 -15 10 -4 17 80 50 396 157 774 430 1037 750 347 422 621
+871 756 1238 l29 78 -32 14 c-18 7 -148 64 -288 125 -454 200 -614 260 -687
+260 -90 0 -135 -52 -152 -175 -19 -130 -81 -181 -211 -172 -710 50 -1483 163
+-2315 338 -307 64 -470 31 -607 -122 -35 -39 -106 -117 -158 -173 -77 -82
+-300 -380 -300 -401 0 -3 55 -31 123 -63 167 -80 319 -166 360 -205 30 -28 38
+-46 61 -144 23 -99 136 -677 136 -696 0 -4 -142 -7 -316 -7 -359 0 -367 1
+-408 74 -13 22 -43 104 -66 181 -35 120 -112 365 -355 1140 -48 154 -86 214
+-148 234 -17 6 -140 12 -272 14 -287 4 -361 20 -565 117 -177 84 -231 87 -311
+21 -64 -53 -108 -161 -490 -1194 -148 -402 -157 -419 -215 -448 -42 -20 -45
+-20 -181 -4 -300 37 -425 10 -479 -104 -50 -105 -152 -367 -200 -511 -60 -184
+-65 -256 -20 -314 53 -70 92 -80 324 -84 201 -4 203 -4 196 -25 -4 -12 -19
+-70 -35 -129 -15 -59 -42 -143 -59 -185 -67 -167 -45 -299 79 -467 92 -124
+166 -150 234 -83 50 51 304 434 391 592 173 312 243 359 581 389 454 41 617
+58 705 71 120 19 167 19 218 1 94 -33 119 -65 275 -353 342 -628 584 -885 888
+-939 130 -24 255 -5 273 41 18 49 -16 143 -309 850 -211 506 -193 452 -164
+511 24 49 24 49 77 52 142 8 347 -122 461 -293 59 -89 74 -132 101 -295 50
+-293 132 -425 320 -514 162 -76 260 -22 280 157 5 40 19 161 31 271 13 113 27
+200 34 202 6 3 121 -43 255 -102 695 -300 1264 -516 2150 -816 l325 -109 85 4
+c186 8 314 129 315 294 l0 73 1751 0 c1573 0 1760 -2 1830 -16 219 -45 377 14
+457 173 28 54 78 226 103 353 27 137 2 662 -61 1285 -39 385 -132 1013 -161
+1084 -40 100 -106 120 -504 156 -307 27 -1263 75 -1500 75 l-108 0 -11 48 c-5
+26 -18 84 -27 129 -9 45 -24 95 -34 111 -29 47 -304 199 -553 306 -177 75
+-269 95 -349 72z m-2231 -1180 c11 -10 -16 -123 -48 -206 -160 -405 -623 -828
+-993 -907 -294 -62 -584 109 -650 385 -23 93 -30 462 -11 509 51 122 97 135
+590 168 990 67 1092 72 1112 51z m3632 -16 c405 -35 846 -83 914 -101 56 -14
+93 -49 107 -100 21 -78 40 -397 70 -1185 11 -307 5 -344 -63 -381 -41 -22 16
+-23 -1502 18 -369 9 -396 11 -497 36 -67 17 -108 32 -108 40 0 7 45 156 99
+330 176 565 219 703 300 981 85 287 95 314 133 349 55 52 79 53 547 13z
+m-8066 -722 c48 -81 87 -149 87 -152 0 -4 -88 -6 -195 -6 -107 0 -195 3 -195
+7 0 4 17 36 39 72 21 36 64 110 96 164 51 88 58 97 69 80 7 -10 52 -84 99
+-165z M13105 4055 c-8 -28 -115 -835 -115 -865 1 -58 32 -114 75 -134 44 -21
+111 -20 423 9 101 9 185 15 187 13 8 -9 24 -307 17 -331 -5 -19 -26 -41 -62
+-65 -98 -66 -131 -141 -150 -342 -5 -58 -14 -145 -20 -195 -11 -101 -2 -525
+12 -525 4 0 112 25 240 55 128 30 233 53 234 52 6 -10 54 -145 54 -155 0 -10
+-39 -12 -174 -11 -256 3 -266 -5 -297 -274 -10 -89 -30 -243 -44 -342 -14 -99
+-27 -193 -29 -210 -7 -52 13 -123 41 -145 55 -43 76 -43 505 0 1060 107 2809
+303 2988 336 334 60 578 235 568 407 -3 49 -4 52 -48 74 -84 43 -808 73 -1771
+73 -847 0 -904 7 -957 110 -22 42 -23 55 -20 191 l3 146 38 57 c46 69 120 120
+303 206 159 75 190 98 222 168 26 59 28 170 3 235 -26 66 -183 107 -418 107
+-90 0 -163 3 -163 8 0 34 31 260 40 294 17 64 66 150 110 193 49 48 84 54 515
+95 672 64 1370 187 1517 267 98 53 164 158 175 277 3 37 2 66 -3 66 -5 0 -119
+11 -254 24 -374 38 -382 38 -1870 72 -366 8 -937 27 -1269 42 -398 18 -604 24
+-606 17z M17403 3985 c-12 -9 -31 -28 -43 -44 l-20 -30 21 -77 c55 -202 -14
+-351 -225 -481 -154 -95 -332 -258 -372 -340 -67 -135 8 -244 246 -359 63 -31
+156 -76 205 -100 200 -97 322 -240 360 -421 8 -39 28 -201 44 -360 42 -415 96
+-652 178 -792 103 -172 335 -292 427 -220 49 39 65 101 91 354 23 232 97 789
+105 798 8 9 240 -103 900 -439 228 -116 483 -240 565 -275 254 -108 315 -165
+351 -328 9 -42 30 -103 48 -136 39 -75 167 -212 222 -236 35 -16 199 -59 224
+-59 21 0 72 195 93 353 32 250 39 2941 8 3012 -25 56 -28 57 -231 95 -255 47
+-364 60 -506 60 -185 0 -425 -45 -432 -81 -1 -8 81 -478 183 -1043 174 -968
+184 -1029 168 -1042 -10 -7 -21 -12 -25 -11 -28 8 -1325 1002 -1390 1064 -94
+91 -115 247 -78 583 35 314 -3 459 -122 474 -261 32 -418 49 -628 66 -135 11
+-268 22 -295 25 -36 3 -57 0 -72 -10z"/>
+</g></svg>
+  <h1>Pedidos do totem · Ipanema</h1>
+  <div class="sp"></div>
+  <div class="stat">Na fila <b id="cntQ">0</b></div>
+  <div class="stat">Hoje <b id="cntD">0</b></div>
+  <div class="conn" id="conn"><i></i><span>Conectando…</span></div>
+  <button type="button" class="sound" id="sound">Som desligado</button>
+  <div class="clock" id="clock">--:--</div>
+</header>
+<div class="banner" id="soundBanner"><span>Clique em <b>Ativar som</b> para ouvir um aviso a cada pedido novo.</span><button type="button" id="soundGo">Ativar som</button></div>
+<div class="banner err" id="errBanner" hidden></div>
+<main>
+  <section class="queue" id="queue" aria-live="polite">
+    <div class="empty"><b>Nenhum pedido na fila</b>Os pedidos feitos no totem aparecem aqui na hora.</div>
+  </section>
+  <details class="hist" id="hist">
+    <summary>Concluídos e cancelados hoje <span id="histSum">0 pedidos · R$ 0,00</span></summary>
+    <div id="histList"></div>
+  </details>
+</main>
+<script>
+const $=s=>document.querySelector(s);
+const brl=n=>"R$ "+Number(n||0).toFixed(2).replace(".",",").replace(/\B(?=(\d{3})+(?!\d))/g,".");
+const esc=s=>String(s??"").replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
+const hhmm=t=>new Date(t).toLocaleTimeString("pt-BR",{hour:"2-digit",minute:"2-digit",timeZone:"America/Sao_Paulo"});
+const LATE_MIN=10;
+
+/* ---------- som ---------- */
+let ctx=null, soundOn=false;
+try{soundOn=localStorage.getItem("pk-caixa-som")==="1"}catch(e){}
+function setSound(on){
+  soundOn=on; try{localStorage.setItem("pk-caixa-som",on?"1":"0")}catch(e){}
+  if(on && !ctx){ try{ctx=new (window.AudioContext||window.webkitAudioContext)()}catch(e){} }
+  if(ctx && ctx.state==="suspended") ctx.resume();
+  $("#sound").classList.toggle("on",on); $("#sound").textContent=on?"Som ligado":"Som desligado";
+  $("#soundBanner").hidden=on && !!ctx && ctx.state==="running";
+}
+function ding(){
+  if(!soundOn||!ctx) return;
+  const t=ctx.currentTime;
+  [[880,0],[1175,.18],[1568,.36]].forEach(([f,d])=>{
+    const o=ctx.createOscillator(),g=ctx.createGain();o.type="sine";o.frequency.value=f;
+    g.gain.setValueAtTime(0,t+d);g.gain.linearRampToValueAtTime(.35,t+d+.02);g.gain.exponentialRampToValueAtTime(.001,t+d+.5);
+    o.connect(g).connect(ctx.destination);o.start(t+d);o.stop(t+d+.55);
+  });
+}
+$("#sound").onclick=()=>setSound(!soundOn||!ctx||ctx.state!=="running");
+$("#soundGo").onclick=()=>{setSound(true);ding();};
+if(soundOn){$("#sound").classList.add("on");$("#sound").textContent="Som ligado";}
+
+/* ---------- dados ---------- */
+let PED=[], seen=null, fresh=new Set(), busy=false;
+async function load(){
+  if(busy) return; busy=true;
+  try{
+    const r=await fetch("/api/pedidos",{cache:"no-store"});
+    const j=await r.json().catch(()=>({}));
+    if(!r.ok) throw new Error(j.erro||("Erro "+r.status));
+    PED=j.pedidos||[];
+    const ids=new Set(PED.map(p=>p.numero));
+    if(seen){ let novo=false; PED.forEach(p=>{ if(!seen.has(p.numero)&&p.status==="novo"){const n=p.numero;fresh.add(n);novo=true;setTimeout(()=>{fresh.delete(n);render();},60000);} }); if(novo) ding(); }
+    seen=ids;
+    $("#conn").className="conn ok"; $("#conn span").textContent="Ao vivo";
+    $("#errBanner").hidden=true;
+    render();
+  }catch(e){
+    $("#conn").className="conn bad"; $("#conn span").textContent="Sem conexão";
+    $("#errBanner").hidden=false; $("#errBanner").innerHTML="<span>"+esc(e.message)+"</span>";
+  }finally{busy=false;}
+}
+async function setStatus(numero,status){
+  const p=PED.find(x=>x.numero===numero); if(p) p.status=status; fresh.delete(numero); render();
+  try{
+    const r=await fetch("/api/pedidos",{method:"PATCH",headers:{"Content-Type":"application/json"},body:JSON.stringify({numero,status})});
+    if(!r.ok) throw new Error();
+  }catch(e){ load(); }
+}
+
+/* ---------- tela ---------- */
+function mins(t){return Math.floor((Date.now()-t)/60000)}
+function card(p){
+  const m=mins(p.criadoEm), late=m>=LATE_MIN;
+  return `<article class="order${fresh.has(p.numero)?" fresh":""}${late?" late":""}" data-n="${p.numero}">
+    <div class="oh"><div class="num"><small>Pedido</small>${p.numero}</div>
+      <div class="when"><b>${m<1?"agora":"há "+m+" min"}</b>${hhmm(p.criadoEm)} · ${esc(p.origem)}</div></div>
+    <ul class="items">${p.itens.map(i=>`<li><span class="q">${i.q}×</span><span class="n">${esc(i.n)}</span><span class="p">${brl(i.p*i.q)}</span>${i.d?`<span class="d">${esc(i.d)}</span>`:""}</li>`).join("")}</ul>
+    <div class="tot"><span>Total</span><span>${brl(p.total)}</span></div>
+    <div class="acts"><button type="button" class="done" data-act="concluido">Concluído</button><button type="button" class="cancel" data-act="cancelado">Cancelar</button></div>
+  </article>`;
+}
+function render(){
+  const q=PED.filter(p=>p.status==="novo");
+  const h=PED.filter(p=>p.status!=="novo").sort((a,b)=>b.numero-a.numero);
+  $("#cntQ").textContent=q.length; $("#cntD").textContent=PED.length;
+  $("#queue").innerHTML=q.length?q.map(card).join(""):`<div class="empty"><b>Nenhum pedido na fila</b>Os pedidos feitos no totem aparecem aqui na hora.</div>`;
+  const vend=h.filter(p=>p.status==="concluido").reduce((a,p)=>a+p.total,0);
+  $("#histSum").textContent=`${h.length} pedido${h.length===1?"":"s"} · ${brl(vend)} concluídos`;
+  $("#histList").innerHTML=h.map(p=>`<div class="hrow"><span class="hn">${p.numero}</span><span class="ht">${hhmm(p.criadoEm)}</span><span class="hi">${esc(p.itens.map(i=>i.q+"× "+i.n).join(", "))}</span><span class="hv">${brl(p.total)}</span><span><span class="hs${p.status==="cancelado"?" c":""}">${p.status==="cancelado"?"Cancelado":"Concluído"}</span><button type="button" data-reopen="${p.numero}">Reabrir</button></span></div>`).join("");
+  document.title=(q.length?`(${q.length}) `:"")+"Caixa | Pokentaro Ipanema";
+}
+$("#queue").addEventListener("click",e=>{
+  const b=e.target.closest("[data-act]"); if(!b) return;
+  setStatus(+b.closest(".order").dataset.n,b.dataset.act);
+});
+$("#histList").addEventListener("click",e=>{
+  const b=e.target.closest("[data-reopen]"); if(b) setStatus(+b.dataset.reopen,"novo");
+});
+function tick(){$("#clock").textContent=new Date().toLocaleTimeString("pt-BR",{hour:"2-digit",minute:"2-digit",timeZone:"America/Sao_Paulo"});}
+tick(); setInterval(tick,10000);
+setInterval(()=>{ if(PED.length) render(); },30000);
+load(); setInterval(load,3000);
+document.addEventListener("visibilitychange",()=>{ if(!document.hidden) load(); });
+</script>
+</body>
+</html>

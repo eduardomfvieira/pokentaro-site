@@ -172,7 +172,7 @@ const ADD = {
 const v = (a,b,pa,pb)=>[{l:a,p:pa},{l:b,p:pb}];
 const MENU = [
  {id:"pokes",t:"Poke Lovers",art:"poke",items:[
-  {id:"monte",n:"Monte seu Poke",d:"Crie seu poke do seu jeito! Escolha sua base, proteína, acompanhamentos, toppings e o molho que mais combina com você. Uma explosão de sabores, feita sob medida para o seu paladar! Monte com 1 proteína, até 2 bases, 4 acompanhamentos, 1 crocante, 1 topping e 1 molho.",p:47.9,from:true,poke:"monte",img:"monte"},
+  {id:"monte",n:"Monte seu Poke",d:"Crie seu poke do seu jeito! Escolha sua base, proteína, acompanhamentos, toppings e o molho que mais combina com você. Uma explosão de sabores, feita sob medida para o seu paladar! Monte com 1 proteína, 1 base, 4 acompanhamentos, 1 crocante, 1 topping e 1 molho.",p:47.9,from:true,poke:"monte",img:"monte"},
   {id:"super",n:"Monte seu Super Poke",d:"Um poke robusto e totalmente personalizado! Combine mais bases, duas proteínas, acompanhamentos frescos e toppings variados com o molho da sua preferência. Monte com 2 proteínas, até 2 bases, 4 acompanhamentos, 2 crocantes, 2 toppings e 1 molho.",p:50.9,from:true,poke:"super",img:"monte"},
   {id:"pk-salmao",n:"Poke Salmão",d:"Cubos de salmão fresco sobre arroz japonês, combinados com manga suculenta, cream cheese, cebola roxa, chips crocantes, gergelim e cebolinha. Uma explosão de sabores com o molho que você escolher!",p:64.9,img:"salmao",opts:[{t:"Molho",min:1,max:1,o:[["Shoyu"],["Teriyaki"],["Agridoce"],["Sweet chilli"],["Mostarda e mel"],["Azeite"],["Azeite trufado"]]}]},
   {id:"pk-ceviche",n:"Poke Ceviche",d:"Ceviche marinado no limão com toque oriental, servido sobre arroz japonês com tomate-cereja, edamame, sunomono e finalização crocante de couve frita. Um poke leve, cítrico e surpreendente.",p:64.9,img:"pkceviche"},
@@ -302,7 +302,7 @@ const POKE_COMMON = (cri,nut)=>[
 ];
 const BASES=[["Arroz japonês"],["Bifum"],["Quinoa"],["Mix de folhas"],["Espaguete de abobrinha"],["Grão-de-bico"]];
 const POKE = {
-  monte:[{id:"prot",t:"Proteína",min:1,max:1,o:PROT.map(p=>[p[0],p[1]])},{id:"base",t:"Bases",min:1,max:2,o:BASES}].concat(POKE_COMMON(1,1)),
+  monte:[{id:"prot",t:"Proteína",min:1,max:1,o:PROT.map(p=>[p[0],p[1]])},{id:"base",t:"Base",min:1,max:1,o:BASES}].concat(POKE_COMMON(1,1)),
   super:[{id:"prot1",t:"1ª proteína",min:1,max:1,o:PROT.map(p=>[p[0],p[2]])},{id:"prot2",t:"2ª proteína",min:1,max:1,o:PROT.map(p=>[p[0],p[2]])},{id:"base",t:"Bases",min:1,max:2,o:BASES}].concat(POKE_COMMON(2,2))
 };
 const FEAT = ["monte","super","pk-salmao","pk-ceviche","cb2"];

@@ -138,10 +138,24 @@ html,body{user-select:none;-webkit-user-select:none;-webkit-touch-callout:none;o
 #idle button{border:0;border-radius:12px;background:var(--verde);color:#fff;font-weight:600;padding:14px 20px;width:100%}
 .restart{display:block;width:100%;margin-top:10px;border:1px solid var(--line);background:transparent;border-radius:12px;padding:12px;font-weight:600;color:var(--ink)}
 .homebtn{position:fixed;left:12px;top:calc(12px + env(safe-area-inset-top,0px));z-index:25;border:0;border-radius:999px;background:var(--verde-escuro);color:var(--creme);font-weight:600;font-size:.8rem;padding:8px 14px;box-shadow:0 4px 12px rgba(0,0,0,.2)}
+
+.finish{display:flex;justify-content:space-between;align-items:center;width:100%;margin-top:14px;border:0;border-radius:14px;background:var(--laranja);color:#fff;font-weight:700;font-size:1.05rem;padding:16px 18px;box-shadow:0 8px 20px rgba(255,119,1,.3)}
+.finish em{font-style:normal;font-variant-numeric:tabular-nums}
+.finish:disabled{opacity:.6}
+.hint.err{background:#ffe1d6;color:#7a2600}
+#done{position:fixed;inset:0;z-index:110;background:var(--verde-escuro);color:var(--creme);display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:24px;gap:6px}
+#done .lbl{font-size:1rem;font-weight:600;letter-spacing:.2em;text-transform:uppercase;color:var(--ciano)}
+#done .num{font-size:7rem;font-weight:800;line-height:1;color:var(--laranja);font-variant-numeric:tabular-nums}
+#done h2{margin:14px 0 6px;font-size:1.6rem;color:var(--creme)}
+#done .unpaid{margin-top:14px;background:var(--laranja);color:#fff;font-weight:700;font-size:.9rem;letter-spacing:.06em;text-transform:uppercase;border-radius:999px;padding:8px 18px}
+#done p b{color:var(--laranja)}
+#done p{margin:0;max-width:26ch;color:#cfe3da;line-height:1.45}
+#done small{margin-top:28px;color:#8fb3a6;font-size:.8rem}
 </style>
 </head>
 <body>
 <div id="attract" role="button" aria-label="Toque para começar"></div>
+<div id="done" hidden><div class="lbl">Seu pedido</div><div class="num" id="doneN">0</div><div class="unpaid">Pedido ainda não pago</div><h2>Agora é só pagar no caixa</h2><p>Informe o número <b id="doneN2">0</b> ao atendente para pagar. Seu pedido só vai para a cozinha após o pagamento.</p><small>Toque para fechar</small></div>
 <div id="idle" hidden><div class="box"><h4>Ainda está aí?</h4><p>O pedido será reiniciado em <b id="idleN">15</b> s.</p><button type="button" id="idleGo">Continuar pedido</button></div></div>
 <button type="button" class="homebtn" id="homeBtn">Início</button>
 <div class="app">
@@ -466,7 +480,8 @@ function bagHTML(){
   return `<ul class="bag-list">${BAG.map((b,k)=>`<li><div class="tx"><div class="nm">${esc(b.n)}</div>${b.d?`<div class="dt">${esc(b.d)}</div>`:""}<div class="pr">${brl(b.p*b.q)}</div></div>
     <div class="qty"><button type="button" data-bq="${k}" data-d="-1" aria-label="Diminuir">−</button><span>${b.q}</span><button type="button" data-bq="${k}" data-d="1" aria-label="Aumentar">+</button></div></li>`).join("")}</ul>
     <div class="total"><span>Total</span><span>${brl(t)}</span></div>
-    <div class="hint">Fotografe esta tela ou informe sua seleção no caixa para finalizar o pedido.</div>
+    <button type="button" class="finish" id="finishBtn"><span>Finalizar e pagar no caixa</span><em>${brl(t)}</em></button>
+    <div class="hint" id="finishMsg">Ao finalizar, você recebe o número do pedido. O pagamento é feito no caixa.</div>
     <button type="button" class="restart" id="clearBag">Limpar seleção</button>`;
 }
 $("#openBag").onclick=()=>{
@@ -502,8 +517,28 @@ renderTabs(); renderFeat(); renderMenu(); drawBar();
   A.addEventListener("click",()=>{A.hidden=true;poke();scrollTo(0,0);});
   document.getElementById("homeBtn").addEventListener("click",home);
   document.getElementById("idleGo").addEventListener("click",poke);
+  /* envio do pedido para o caixa */
+  const D=document.getElementById("done"); let doneT=null;
+  function closeDone(){clearTimeout(doneT); D.hidden=true; home();}
+  D.addEventListener("click",closeDone);
+  document.addEventListener("click",async e=>{
+    const b=e.target.closest("#finishBtn"); if(!b||!BAG.length) return;
+    b.disabled=true; b.querySelector("span").textContent="Enviando…";
+    const msg=document.getElementById("finishMsg");
+    try{
+      const r=await fetch("/api/pedidos",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({origem:"totem",itens:BAG})});
+      const j=await r.json().catch(()=>({}));
+      if(!r.ok||!j.numero) throw new Error(j.erro||("HTTP "+r.status));
+      document.getElementById("doneN").textContent=j.numero; document.getElementById("doneN2").textContent=j.numero;
+      sheet.classList.remove("show");scrim.classList.remove("show");sheet.hidden=true;scrim.hidden=true;sheet.innerHTML="";document.body.style.overflow="";
+      BAG=[]; drawBar(); D.hidden=false; poke(); doneT=setTimeout(closeDone,20000);
+    }catch(err){
+      b.disabled=false; b.querySelector("span").textContent="Tentar de novo";
+      if(msg){msg.classList.add("err"); msg.textContent="Não conseguimos enviar o pedido. Tente de novo ou mostre esta tela no caixa.";}
+    }
+  });
   setInterval(()=>{
-    if(!A.hidden) return;
+    if(!A.hidden || !D.hidden) return;
     const idle=(Date.now()-last)/1000;
     if(idle>=IDLE && I.hidden){
       if(!BAG.length && sheet.hidden){home();return;}
